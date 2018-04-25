@@ -12,9 +12,10 @@
 
 NAME	= get_next_line
 INC		= includes
-SRC_DIR = src
+SRC_DIR = srcs
 
-SRCS	= main.c
+SRCS	= main.c \
+				get_next_line.c
 
 OBJ_DIR = obj
 OBJS	= $(SRCS:.c=.o)

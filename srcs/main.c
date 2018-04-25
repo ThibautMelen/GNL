@@ -10,15 +10,13 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "includes/get_next_line.h"
-
-#define BUF_SIZE 4096
+#include "../includes/get_next_line.h"
 
 int main(void)
 {
   int fd;
   int ret;
-  char buf[BUF_SIZE + 1];
+  char buf[BUFF_SIZE + 1];
 
   // fd = open("_test/42", O_RDWR | O_CREAT | O_APPEND, S_IRUSR | S_IWUSR);
   fd = open("_test/42", O_RDONLY);
@@ -28,7 +26,7 @@ int main(void)
     return (1);
   }
   ft_putstr_fd("wertui", fd);
-  ret = read(fd, buf, BUF_SIZE);
+  ret = read(fd, buf, BUFF_SIZE);
   buf[ret] = '\0';
   ft_putnbr(ret);
   ft_putstr("\n");

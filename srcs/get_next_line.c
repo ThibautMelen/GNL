@@ -10,4 +10,11 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../includes/get_next_line.h"
 
+int get_next_line(const int fd, char **line)
+{
+  (void)fd;
+  (void)line;
+  return (1);
+}
