@@ -14,29 +14,48 @@
 
 int main(void)
 {
-  int fd;
   int ret;
   char buf[BUFF_SIZE + 1];
-
-  // fd = open("_test/42", O_RDWR | O_CREAT | O_APPEND, S_IRUSR | S_IWUSR);
-  fd = open("_test/42", O_RDONLY);
+  // const int fd = open("_test/42", O_RDWR | O_CREAT | O_APPEND, S_IRUSR | S_IWUSR);
+  const int fd = open("_test/42", O_RDONLY);
   if (fd == -1)
   {
     ft_putstr("open() failed");
     return (1);
   }
-  ft_putstr_fd("wertui", fd);
+  ft_putnbr(fd);
+  ft_putstr("\n");
+
+
   ret = read(fd, buf, BUFF_SIZE);
   buf[ret] = '\0';
   ft_putnbr(ret);
   ft_putstr("\n");
   ft_putstr(buf);
+
+
+  int i = 0;
+  int i_octet = 0;
+  char *oklm;
+
+  while (buf[i])
+  {
+    if(buf[i] == '\n')
+    {
+      oklm = ft_strdup(ft_strsub(buf, i_octet, i));
+      break ;
+    }
+    i++;
+  }
+  ft_putstr("\n\n");
+  ft_putstr(oklm);
+  ft_putstr("\n\n");
+  // free(oklm);
   if (close(fd) == -1)
   {
     ft_putstr("close() failed");
     return (1);
   }
   ft_putnbr(fd);
-  ft_putstr("\nnike tes morts");
   return (1);
 }
