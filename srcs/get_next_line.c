@@ -14,7 +14,16 @@
 
 int get_next_line(const int fd, char **line)
 {
-  (void)fd;
-  (void)line;
+  static unsigned int start = 0;
+  static char* content = read_file(fd);
+
+  unsigned int end;
+  end = start;
+
+  while (end != '\n' && end != '\0')
+    end++;
+  if (end == '\n')
+    *line = ft_strsub();
+  start = end;
   return (1);
 }

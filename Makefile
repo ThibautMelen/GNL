@@ -15,7 +15,8 @@ INC		= includes
 SRC_DIR = srcs
 
 SRCS	= main.c \
-				get_next_line.c
+				get_next_line.c \
+				file.c
 
 OBJ_DIR = obj
 OBJS	= $(SRCS:.c=.o)
