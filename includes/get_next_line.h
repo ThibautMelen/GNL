@@ -18,22 +18,28 @@
 # include <sys/stat.h>
 # include <fcntl.h>
 
+typedef	struct		s_gnl
+{
+	int			fd;
+  char *str_tmp;
+  int nb_oct_read;
+}					t_gnl;
+
 int get_next_line(const int fd, char **line);
 
+# define BUFF_SIZE 32
+# define FD content_size
+
+#define LINE_IS_READ 1
+#define LINE_END_READ 0
+#define LINE_ERROR_READ -1
+
+#endif
+
+
+//A SUPPRIMER (IT'S FILE)
 void		show_usage(const char *name);
 void		exit_program(int status);
 void	check_buff(const char *buff);
 int			open_file(char *path);
 char		*read_file(int fd);
-
-
-#define BUFF_SIZE 32
-
-# define NO_ERROR 0
-# define OPEN_FILE_ERROR -1
-# define READ_FILE_ERROR -2
-# define BUFF_ERROR -3
-# define CONTENT_ERROR -4
-# define MALLOC_ERROR -42
-
-#endif

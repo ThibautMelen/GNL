@@ -6,11 +6,18 @@
 /*   By: thmelen <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/26 15:32:15 by thmelen           #+#    #+#             */
-/*   Updated: 2018/04/26 15:32:17 by thmelen          ###   ########.fr       */
+/*   Updated: 2018/05/04 18:02:29 by thmelen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/get_next_line.h"
+
+# define NO_ERROR 0
+# define OPEN_FILE_ERROR -5
+# define READ_FILE_ERROR -6
+# define BUFF_ERROR -7
+# define CONTENT_ERROR -8
+# define MALLOC_ERROR -42
 
 void		show_usage(const char *name)
 {
@@ -47,10 +54,10 @@ char		*read_file(int fd)
 	char	*content;
 	char	*buff;
 	char	*tmp;
-  int		ret;
+	int		ret;
 
-  if (!(buff = malloc(sizeof(char *) * (BUFF_SIZE + 1))))
-    exit_program(MALLOC_ERROR);
+	if (!(buff = malloc(sizeof(char *) * (BUFF_SIZE + 1))))
+		exit_program(MALLOC_ERROR);
 	if (!(content = ft_strnew(1)))
 		exit_program(MALLOC_ERROR);
 	while ((ret = read(fd, buff, BUFF_SIZE)) > 0)
