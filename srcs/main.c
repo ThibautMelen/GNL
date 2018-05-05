@@ -15,21 +15,33 @@
 
 int main(int argc, char **argv)
 {
-	if (argc != 2)
+	if (argc != 3)
 		show_usage(argv[0]);
 
 	char *line;
+	line = NULL;
 	int fd = open_file(argv[1]);
-
+	int fd2 = open_file(argv[2]);
+	// int ret = 0;
 	int i;
 	i = 0;
-	while (i < 10)
-	{
+	// while (i < 10)
+	// {
 		get_next_line(fd, &line);
 		ft_putstr(line);
 		ft_putstr("\n");
-		i++;
-	}
+
+		get_next_line(fd2, &line);
+		ft_putstr(line);
+		ft_putstr("\n");
+
+		get_next_line(fd, &line);
+		ft_putstr(line);
+		ft_putstr("\n");
+		//ft_strdel(&line);
+		// i++;
+	// }
 	ft_putchar('\n');
+	// while (1);
 	return (1);
 }

@@ -29,15 +29,15 @@ int get_next_line(const int fd, char **line);
 
 # define BUFF_SIZE 32
 # define FD content_size
-
-#define LINE_IS_READ 1
-#define LINE_END_READ 0
-#define LINE_ERROR_READ -1
+# define LINE_IS_READ 1
+# define LINE_END_READ 0
+# define LINE_ERROR_READ -1
 
 #endif
 
 
 //A SUPPRIMER (IT'S FILE)
+#include <stdio.h>
 void		show_usage(const char *name);
 void		exit_program(int status);
 void	check_buff(const char *buff);
