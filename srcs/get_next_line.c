@@ -10,103 +10,83 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/get_next_line.h"
+#include "get_next_line.h"
 
-static int		cut_save_surplus(t_gnl *this_file, char **line)
+static int		cut_save_surplus(char **line, t_list *this_file)
 {
-	int		i;
-	int		oct_split;
+	int		start;
+	int		end;
 	char	*tmp;
-	char 	*tmp2;
 
-	printf("save : %d\n", this_file->fd);
-
-	i = 0;
-	oct_split = 0;
-	while ((this_file->str_tmp)[i])
+	start = -42;
+	end = 0;
+	while (((char *)this_file->STR_TMP)[end] != '\0')
 	{
-		if ((this_file->str_tmp)[i] == '\n')
-			oct_split = i;
-		i++;
+		if (start == -42)
+			if (((char *)this_file->STR_TMP)[end] == '\n')
+				start = end;
+		end++;
 	}
-	tmp2 = *line;
-	if (!(*line = ft_strnew(oct_split)))
+	if (start == -42)
+		start = end;
+	if (!(*line = ft_strnew(start)))
 		return (LINE_END_READ);
-	ft_strdel(&tmp2);
-	ft_strncpy(*line, this_file->str_tmp, oct_split);
-	if (!(tmp = ft_strnew(i - oct_split)))
+	ft_strncpy(*line, (char *)this_file->STR_TMP, start);
+	if (!(tmp = ft_strnew(end - start)))
 		return (LINE_END_READ);
-	ft_strncpy(tmp, &(this_file->str_tmp)[oct_split + 1], i - oct_split);
-	free(this_file->str_tmp);
-	this_file->str_tmp = tmp;
+	ft_strncpy(tmp, ((char *)this_file->STR_TMP) + start + 1, (end - start));
+	free((char *)this_file->STR_TMP);
+	this_file->STR_TMP = tmp;
 	return (LINE_IS_READ);
 }
 
-static t_gnl	get_create_fd(t_list **save_list, const int fd)
+static t_list	*get_create_fd(t_list **save_list, const int fd)
 {
 	t_list	*actual_list;
-	t_gnl this_file;
-	char *leak_tmp;
 
 	actual_list = *save_list;
-	this_file.nb_oct_read = 0;
 	while (actual_list != NULL)
 	{
 		if ((int)actual_list->FD == fd)
-		{
-			this_file.fd = (int)actual_list->FD;
-			leak_tmp = this_file.str_tmp;
-			this_file.str_tmp = ft_strdup((char*)actual_list->content);
-			ft_strdel(&leak_tmp);
-			return (this_file);
-		}
-		actual_list = actual_list->next;
+			return (actual_list);
+		else
+			actual_list = actual_list->next;
 	}
 	if (actual_list == NULL)
 	{
-
-		actual_list = ft_lstnew("\0", 1);
-
+		if (!(actual_list = ft_lstnew("\0", 1)))
+			return (NULL);
 		actual_list->FD = fd;
 		ft_lstadd(save_list, actual_list);
 	}
-	this_file.fd = (int)actual_list->FD;
-	leak_tmp = this_file.str_tmp;
-	this_file.str_tmp = ft_strdup((char*)actual_list->content);
-	ft_strdel(&leak_tmp);
-	return (this_file);
+	return (actual_list);
 }
 
 int				get_next_line(const int fd, char **line)
 {
 	static t_list	*save_list;
-	t_gnl			*this_file;
-
+	t_list			*this_file;
 	char			buff[BUFF_SIZE + 1];
 	char			*tmp;
+	int				nb_oct_read;
 
 	if ((BUFF_SIZE < 1 || line == NULL || fd < 0 || read(fd, buff, 0) < 0))
 		return (LINE_ERROR_READ);
-
-	//if (!(this_file = get_create_fd(&save_list, fd)))
-		//return (LINE_ERROR_READ);
 	this_file = get_create_fd(&save_list, fd);
-
-	while ((this_file.nb_oct_read = read(fd, buff, BUFF_SIZE)) > LINE_END_READ)
+	while ((nb_oct_read = read(fd, buff, BUFF_SIZE)) > LINE_END_READ)
 	{
-		buff[this_file.nb_oct_read] = '\0';
-		tmp = this_file.str_tmp;
-		if (!(this_file.str_tmp = ft_strjoin(tmp, buff)))
+		buff[nb_oct_read] = '\0';
+		tmp = (char *)this_file->STR_TMP;
+		if (!(this_file->STR_TMP = ft_strjoin(tmp, buff)))
 			return (LINE_ERROR_READ);
 		free(tmp);
 		if (ft_strchr(buff, '\n') != NULL)
 			break ;
 	}
-	if (this_file.nb_oct_read < BUFF_SIZE && !ft_strlen(this_file.str_tmp))
+	if (nb_oct_read < BUFF_SIZE &&
+			(ft_strlen((char *)this_file->STR_TMP) == LINE_END_READ))
 		return (LINE_END_READ);
-	if (!(cut_save_surplus(&this_file, line)))
+	if (!(cut_save_surplus(line, this_file)))
 		return (LINE_ERROR_READ);
-	save_list->content = (char *)this_file.str_tmp;
-	free(this_file.str_tmp);
 	return (LINE_IS_READ);
 }

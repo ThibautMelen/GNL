@@ -10,36 +10,35 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE
-# define GET_NEXT_LINE
+#ifndef GET_NEXT_LINE_H
+# define GET_NEXT_LINE_H
 
 # include "../libft/includes/libft.h"
 # include <sys/types.h>
 # include <sys/stat.h>
 # include <fcntl.h>
 
-typedef	struct		s_gnl
-{
-	int			fd;
-  char *str_tmp;
-  int nb_oct_read;
-}					t_gnl;
-
 int get_next_line(const int fd, char **line);
 
 # define BUFF_SIZE 32
 # define FD content_size
+# define STR_TMP content
+# define TO_SPLIT '\n'
 # define LINE_IS_READ 1
 # define LINE_END_READ 0
 # define LINE_ERROR_READ -1
 
-#endif
-
-
 //A SUPPRIMER (IT'S FILE)
-#include <stdio.h>
 void		show_usage(const char *name);
 void		exit_program(int status);
 void	check_buff(const char *buff);
 int			open_file(char *path);
 char		*read_file(int fd);
+# define NO_ERROR 0
+# define OPEN_FILE_ERROR -5
+# define READ_FILE_ERROR -6
+# define BUFF_ERROR -7
+# define CONTENT_ERROR -8
+# define MALLOC_ERROR -42
+
+#endif
